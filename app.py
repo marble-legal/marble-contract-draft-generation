@@ -86,13 +86,9 @@ class Assistant:
             )
             try:
                 if all_messages.data[0].content == []:
-                    print("in if")
-                    time.sleep(2)
-                    
+                    time.sleep(1)
                 elif str(all_messages.data[0].content[0].text.value) == self.query:
-                    print("in elif")
-                    time.sleep(2)
-                
+                    time.sleep(1)
                 else:
                     break
             except:
@@ -110,7 +106,6 @@ class Assistant:
                     {"role":"user", "content": "Generate title and summary"}]
         )
         res = completion.choices[0].message.content
-        print(res)
         res_dic = json.loads(res)
         return res_dic['title'], res_dic['summary']
 
