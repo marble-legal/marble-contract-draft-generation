@@ -106,11 +106,12 @@ class Assistant:
             model="gpt-4o",
             temperature=0,
             messages=[
-                    {"role": "system", "content": f"You are a legal expert, use this contract draft in html format- {draft} and generate a title and summary in JSON format. For example - {{'title': 'contract title', 'summary':'conract summary'}}, generate only the JSON and no other text strictly."},
+                    {"role": "system", "content": f"You are a legal expert, use this contract draft in html format- {draft} and generate a title and summary in JSON format. For example - {{'title': 'contract title', 'summary':'conract summary'}}, generate only the JSON and no other text not even 'json' string strictly."},
                     {"role":"user", "content": "Generate title and summary"}]
         )
-        res = completion.choices[0].message
-        res_dic = json.loads(str(res))
+        res = completion.choices[0].message.content
+        print(res)
+        res_dic = json.loads(res)
         return res_dic['title'], res_dic['summary']
 
         
