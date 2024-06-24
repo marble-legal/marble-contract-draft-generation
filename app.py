@@ -110,7 +110,7 @@ class Assistant:
                     {"role":"user", "content": "Generate title and summary"}]
         )
         res = completion.choices[0].message
-        res_dic = json.loads(res)
+        res_dic = json.loads(str(res))
         return res_dic['title'], res_dic['summary']
 
         
