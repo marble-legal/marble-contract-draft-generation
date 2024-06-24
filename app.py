@@ -10,6 +10,7 @@ load_dotenv()
 
 # Configuration placeholders
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+VALID_API_KEYS = {os.getenv("FLASK_API_KEY")}
 app = Flask(__name__)
 
 class SelectDocument:
@@ -101,10 +102,10 @@ class Assistant:
     
 @app.route('/chat', methods=['POST'])
 def get_document():
-    # if request.headers.get('x-api-key') and request.headers.get('x-api-key') in VALID_API_KEYS:
-    #     pass
-    # else:
-    #     abort(401)
+    if request.headers.get('x-api-key') and request.headers.get('x-api-key') in VALID_API_KEYS:
+        pass
+    else:
+        abort(401)
     if request.is_json:
         # Get the JSON data
         data = request.get_json()
