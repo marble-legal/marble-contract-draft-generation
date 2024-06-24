@@ -5,6 +5,7 @@ import os
 from flask import Flask, jsonify,request,abort
 from openai import OpenAI
 import time
+import json
 # Load environment variables
 load_dotenv()
 
@@ -100,6 +101,20 @@ class Assistant:
         
         return all_messages.data[0].content[0].text.value
     
+    def generate_summary_title(self,draft):
+        completion = self.client.chat.completions.create(
+            model="gpt-4o",
+            temperature=0,
+            messages=[
+                    {"role": "system", "content": f"You are a legal expert, use this contract draft in html format- {draft} and generate a title and summary in JSON format. For example - {{'title': 'contract title', 'summary':'conract summary'}}, generate only the JSON and no other text strictly."},
+                    {"role":"user", "content": "Generate title and summary"}]
+        )
+        res = completion.choices[0].message
+        res_dic = json.loads(res)
+        return res_dic['title'], res_dic['summary']
+
+        
+        
 @app.route('/chat', methods=['POST'])
 def get_document():
     if request.headers.get('x-api-key') and request.headers.get('x-api-key') in VALID_API_KEYS:
@@ -129,8 +144,9 @@ def get_document():
     selected_doc = select_doc_obj.select_document()
     assistant = Assistant(query,selected_doc)
     response = assistant.generate_document()
+    title,summary = assistant.generate_summary_title(response)
     if response:
-        return jsonify({"html":response}),200
+        return jsonify({"title":title,"summary":summary,"html":response}),200
     else:
         return jsonify("This is out of my scope"),200
     
