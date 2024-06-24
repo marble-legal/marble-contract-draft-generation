@@ -130,7 +130,7 @@ def get_document():
     assistant = Assistant(query,selected_doc)
     response = assistant.generate_document()
     if response:
-        return jsonify([response]),200
+        return jsonify({"html":response}),200
     else:
         return jsonify("This is out of my scope"),200
     
