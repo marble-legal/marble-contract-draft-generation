@@ -122,7 +122,7 @@ def get_document():
         data = request.get_json()
     # Extract the query parameter from the request
     try:
-        query = data.get('query') + " generate a contract in the same html format as the attached file, return only html page and nothing else (any other text or instruction)."
+        query = data.get('query') + " generate a contract in the same html format as the attached file, return only html page and nothing else (any other text or instruction or even 'html' word)."
         # print(history)
     except:
         query = None
